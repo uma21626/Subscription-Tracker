@@ -1,17 +1,17 @@
 # Subscription-Tracker
 This n8n workflow automatically tracks subscription/recurring expenses. When the user sends a natural language message (e.g., “I subscribed to Spotify for $9.99 a month”), the workflow extracts details and appends them into a Google Sheet.
 
-* Features
+FEATURES
 
- Extracts subscription details (Expense, Charge Date, Cadence, Cost, Status)
+- Extracts subscription details (Expense, Charge Date, Cadence, Cost, Status)
 
- Default values applied (e.g., today’s date if no charge date given)
+- Default values applied (e.g., today’s date if no charge date given)
 
- Appends to Google Sheets (or Excel/CSV alternative if Ollama is used)
+- Appends to Google Sheets (or Excel/CSV alternative if Ollama is used)
 
- Runs locally with Ollama (free) or with OpenAI/Claude/Gemini APIs
+- Runs locally with Ollama (free) or with OpenAI/Claude/Gemini APIs
 
-* Requirements
+REQUIREMENTS
 
 - n8n installed (self-hosted or n8n.cloud)
 
@@ -19,7 +19,7 @@ This n8n workflow automatically tracks subscription/recurring expenses. When the
 
 - Google Sheets API credentials (if using Google Sheets node)
 
-* Setup Instructions
+SETUP INSTRUCTIONS
 
 - Clone this repo.
 
@@ -27,7 +27,7 @@ This n8n workflow automatically tracks subscription/recurring expenses. When the
 
 - Import the workflow JSON (Import from file).
 
-* Configure credentials:
+CONFIGURE CREDENTIALS
 
 - Google Sheets OAuth (if using Sheets).
 
@@ -35,13 +35,13 @@ This n8n workflow automatically tracks subscription/recurring expenses. When the
 
 - Run workflow.
 
-* Usage
+USUAGE
 
 Send a message like:
 
 "I just subscribed to Netflix for $15 per month"
 
-* Customization
+CUSTOMIZATION
 
 - You can switch storage from Google Sheets → Excel/CSV using the Spreadsheet node.
 
