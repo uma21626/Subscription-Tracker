@@ -1,0 +1,244 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "1f192b12-3465-4cfb-bafb-4d0939861dff",
+      "name": "When chat message received",
+      "webhookId": "376d5e17-a1d7-443e-9230-ced9f378d03f"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=You are an AI assistant that helps the user keep track of their subscriptions and recurring expenses.\nWhen the user sends a message about a new subscription, follow these rules:\n\nConfirm Understanding\n\nRestate the subscription details back to the user for confirmation before saving.\n\nExtract and Map Fields to Google Sheet\n\nExpense: The name of the service (e.g., \"chatgpt\").\n\nCharge Date:\n\nIf the user provides a start/charge date, use it.\n\nIf not provided, default to today’s date (the date of the chat message).{{ $now }}\n\nCadence:\n\nDefault to Monthly unless the user specifies otherwise (e.g., yearly, weekly, quarterly).\n\nCost: Extract the currency and amount (e.g., \"$20\", \"₹499\", \"€15\").\n\nStatus: Default to Active unless the user explicitly says \"cancelled\", \"paused\", or \"inactive\".\n\nSpecial Notes\n\nAlways format cost with the currency symbol if provided.\n\nBe flexible with natural language (e.g., \"I’m paying Spotify 9.99 per month\" → Expense = Spotify, Cost = $9.99, Cadence = Monthly).\n\nIf details are unclear, politely ask the user to clarify before saving.\n\nAction\n\nOnce details are confirmed, Always output subscription info in JSON with fields: Expense, Charge Date, Cadence, Cost, Status."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "4161d32a-155e-445e-a0bf-984a906e48ea",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama3:latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        144,
+        208
+      ],
+      "id": "c18a11e3-2343-4b13-b244-47ddc2b2cfdf",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "4nBsCmihIq3xPsqO",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        272,
+        256
+      ],
+      "id": "cbebe7a4-7b6a-4e93-a9a1-250a1a634fcf",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"Expense\": \"ChatGPT\",\n  \"Charge Date\": \"2025-09-29\",\n  \"Cadence\": \"Monthly\",\n  \"Cost\": \"$20\",\n  \"Status\": \"Active\"\n}\n",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        560,
+        0
+      ],
+      "id": "fd9f80c2-7ff7-4578-8752-303c6e67355c",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1ipR6E5MvkCzTi51NRHoJTsKvsbBxmaC_LT0tNuiekFQ",
+          "mode": "list",
+          "cachedResultName": "Scription Tracker",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ipR6E5MvkCzTi51NRHoJTsKvsbBxmaC_LT0tNuiekFQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Tracker",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ipR6E5MvkCzTi51NRHoJTsKvsbBxmaC_LT0tNuiekFQ/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Expense": "={{ $json['Expense'] }}",
+            "Charge Date": "={{ $json['Charge Date'] }}",
+            "Cadence": "={{ $json.Cadence }}",
+            "Cost ": "={{ $json.Cost }}",
+            "Status": "={{ $json.Status }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Expense",
+              "displayName": "Expense",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Charge Date",
+              "displayName": "Charge Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Cadence",
+              "displayName": "Cadence",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Cost ",
+              "displayName": "Cost ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        880,
+        96
+      ],
+      "id": "cdbf475d-1fb2-4917-a883-38f0adcf45a9",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "vfKi8gasUbj9Wsaw",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d21fcc2c-4928-4b3f-a9c7-7e7e810a27cb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ee19842eb606c6cfd4d3080643b0da6732d46feb9e06f1265d2c4a344f76e252"
+  },
+  "id": "lG0UutSyR5jyM1P0",
+  "tags": []
+}
