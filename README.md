@@ -3,13 +3,13 @@ This n8n workflow automatically tracks subscription/recurring expenses. When the
 
 * Features
 
-- Extracts subscription details (Expense, Charge Date, Cadence, Cost, Status)
+ Extracts subscription details (Expense, Charge Date, Cadence, Cost, Status)
 
-- Default values applied (e.g., today’s date if no charge date given)
+ Default values applied (e.g., today’s date if no charge date given)
 
-- Appends to Google Sheets (or Excel/CSV alternative if Ollama is used)
+ Appends to Google Sheets (or Excel/CSV alternative if Ollama is used)
 
-- Runs locally with Ollama (free) or with OpenAI/Claude/Gemini APIs
+ Runs locally with Ollama (free) or with OpenAI/Claude/Gemini APIs
 
 * Requirements
 
